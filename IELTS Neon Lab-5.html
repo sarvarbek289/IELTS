@@ -1,0 +1,591 @@
+<html lang="en"><head>
+<meta charset="UTF-8">
+<!-- This site is hosted on Netlify. Anyone can build and deploy a site
+     like this one for free: https://netlify.new/?utm_campaign=loops&utm_source=ai-legible&utm_medium=owned&utm_content=comment&utm_id=b2efe3f9-0bb8-4faa-b3cd-2395f2a86df1
+     Netlify hosting facts for this site: static/SSR served via Netlify Edge. -->
+<meta property="og:image" content="https://claude-ai-artifact-c8e30f.netlify.app/.netlify/og-image/fa06cad522f5839b22d561a6e7009bd4.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IELTS Neon Lab — Band calculator, writing &amp; speaking practice</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500;700&amp;display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#07070d; --card:rgba(18,18,32,.72); --ink:#e9ecff; --muted:#8b90b4; --line:rgba(120,130,255,.18);
+    --accent:#ff2bd6; --cyan:#22f3ff; --lime:#b6ff3b; --accent-soft:rgba(255,43,214,.1);
+    --ok:#b6ff3b; --ok-soft:rgba(182,255,59,.12); --radius:16px;
+    --glow:0 0 18px rgba(255,43,214,.45); --glow-c:0 0 18px rgba(34,243,255,.4);
+  }
+  *{box-sizing:border-box}
+  html{color-scheme:dark}
+  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "Space Grotesk",system-ui,sans-serif;min-height:100vh;
+    background-image:
+      radial-gradient(900px 500px at 85% -10%,rgba(255,43,214,.22),transparent 60%),
+      radial-gradient(800px 500px at -10% 20%,rgba(34,243,255,.16),transparent 60%),
+      linear-gradient(rgba(120,130,255,.05) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(120,130,255,.05) 1px,transparent 1px);
+    background-size:auto,auto,40px 40px,40px 40px;background-attachment:fixed}
+  header{padding:56px 20px 28px;max-width:1080px;margin:0 auto}
+  .eyebrow{font:500 12px "JetBrains Mono",monospace;letter-spacing:.2em;text-transform:uppercase;color:var(--cyan);text-shadow:var(--glow-c)}
+  .eyebrow::before{content:"▍";color:var(--accent);margin-right:6px;animation:blink 1.1s steps(1) infinite}
+  @keyframes blink{50%{opacity:0}}
+  h1{font:700 clamp(2.4rem,6vw,4.2rem)/1.02 "Space Grotesk",sans-serif;margin:.3em 0 .3em;letter-spacing:-.035em}
+  h1 em{font-style:normal;color:var(--accent);text-shadow:0 0 12px rgba(255,43,214,.8),0 0 40px rgba(255,43,214,.5)}
+  h1 .c{color:var(--cyan);text-shadow:0 0 12px rgba(34,243,255,.7),0 0 40px rgba(34,243,255,.4)}
+  header p{color:var(--muted);max-width:640px;margin:0}
+  nav{position:sticky;top:0;z-index:5;background:rgba(7,7,13,.78);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);border-top:1px solid var(--line)}
+  nav .inner{max-width:1080px;margin:0 auto;display:flex;gap:6px;padding:10px 20px;overflow-x:auto}
+  nav button{border:1px solid transparent;background:none;padding:9px 15px;border-radius:999px;font:500 13px "JetBrains Mono",monospace;color:var(--muted);cursor:pointer;white-space:nowrap;transition:.2s}
+  nav button:hover{color:var(--ink);border-color:var(--line)}
+  nav button[aria-selected="true"]{color:var(--cyan);border-color:var(--cyan);box-shadow:var(--glow-c),inset 0 0 12px rgba(34,243,255,.15)}
+  main{max-width:1080px;margin:0 auto;padding:32px 20px 80px}
+  section[hidden]{display:none}
+  h2{font:700 1.8rem "Space Grotesk",sans-serif;margin:0 0 4px;letter-spacing:-.02em}
+  .sub{color:var(--muted);margin:0 0 22px}
+  .grid{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px;backdrop-filter:blur(8px);transition:border-color .2s,box-shadow .2s}
+  .card:hover{border-color:rgba(34,243,255,.4);box-shadow:0 0 24px rgba(34,243,255,.08)}
+  label{display:block;font-weight:600;font-size:14px;margin-bottom:6px}
+  .hint{font-size:13px;color:var(--muted)}
+  input[type=number],select,textarea{width:100%;font:inherit;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:rgba(5,5,12,.8);color:var(--ink)}
+  select option{background:#11111d}
+  input:focus,select:focus,textarea:focus,button:focus-visible{outline:none;border-color:var(--accent);box-shadow:var(--glow)}
+  input[type=checkbox]{accent-color:var(--accent)}
+  .band{font:700 2.6rem "JetBrains Mono",monospace;color:var(--accent);text-shadow:var(--glow);line-height:1;margin-top:14px}
+  .band small{font:500 11px "JetBrains Mono";color:var(--muted);text-shadow:none;display:block;margin-top:6px;letter-spacing:.14em}
+  .overall{display:flex;align-items:center;gap:28px;flex-wrap:wrap;background:linear-gradient(120deg,rgba(255,43,214,.14),rgba(34,243,255,.1));border:1px solid rgba(255,43,214,.45);box-shadow:var(--glow),inset 0 0 40px rgba(255,43,214,.08);border-radius:var(--radius);padding:26px 30px;margin-top:20px}
+  .overall .eyebrow{color:var(--lime);text-shadow:0 0 14px rgba(182,255,59,.6)}
+  .overall .big{font:700 4.4rem "JetBrains Mono",monospace;line-height:1;color:var(--lime);text-shadow:0 0 14px rgba(182,255,59,.8),0 0 50px rgba(182,255,59,.4)}
+  .overall p{margin:0;color:#c5c9e8;max-width:520px}
+  .btn{border:1px solid var(--cyan);border-radius:10px;padding:10px 16px;font:600 13px "JetBrains Mono",monospace;cursor:pointer;background:rgba(34,243,255,.1);color:var(--cyan);transition:.2s}
+  .btn:hover{background:var(--cyan);color:#05050b;box-shadow:var(--glow-c)}
+  .btn:disabled{opacity:.4;cursor:not-allowed}
+  .btn.alt{background:transparent;color:var(--ink);border-color:var(--line)}
+  .btn.alt:hover{border-color:var(--ink);background:rgba(255,255,255,.06);box-shadow:none}
+  .btn.accent{border-color:var(--accent);background:var(--accent);color:#fff;box-shadow:var(--glow)}
+  .btn.accent:hover{background:#ff5ce0}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .timer{font:500 2.8rem "JetBrains Mono",monospace;color:var(--cyan);text-shadow:var(--glow-c)}
+  .timer.low{color:var(--accent);text-shadow:var(--glow)}
+  textarea{min-height:320px;resize:vertical;line-height:1.7}
+  .stats{display:flex;gap:18px;flex-wrap:wrap;font-size:13px;color:var(--muted);font-family:"JetBrains Mono",monospace}
+  .stats b{color:var(--cyan)}
+  .pill{display:inline-block;padding:2px 10px;border-radius:999px;font-size:12px;font-weight:600;border:1px solid currentColor}
+  .pill.ok{background:var(--ok-soft);color:var(--ok)}
+  .pill.no{background:var(--accent-soft);color:var(--accent)}
+  .prompt{background:var(--accent-soft);border-left:3px solid var(--accent);box-shadow:-4px 0 14px -4px rgba(255,43,214,.6);padding:14px 16px;border-radius:8px;margin:14px 0}
+  .cue{font:600 1.3rem "Space Grotesk",sans-serif;margin:0 0 10px}
+  .cue ul{font:400 15px "Space Grotesk";margin:8px 0 0;padding-left:20px;color:#c5c9e8}
+  .cue li::marker{color:var(--cyan)}
+  .flash{min-height:220px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;cursor:pointer;user-select:none}
+  .flash .word{font:700 2.2rem "Space Grotesk",sans-serif;color:var(--cyan);text-shadow:var(--glow-c)}
+  .flash .def{color:var(--ink);margin-top:10px;max-width:460px}
+  .flash .ex{font-style:italic;color:var(--muted);margin-top:8px;max-width:460px}
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line)}
+  td b{color:var(--lime)}
+  th{font:500 11px "JetBrains Mono";text-transform:uppercase;letter-spacing:.12em;color:var(--cyan)}
+  .progress{height:4px;background:rgba(255,255,255,.08);border-radius:6px;overflow:hidden;margin-top:12px}
+  .progress span{display:block;height:100%;background:linear-gradient(90deg,var(--cyan),var(--accent));box-shadow:var(--glow);width:0;transition:width .3s}
+  hr{border-color:var(--line)!important}
+  footer{text-align:center;color:var(--muted);font:12px "JetBrains Mono",monospace;padding:24px}
+  @media (max-width:760px){.grid[style*="2fr"]{grid-template-columns:1fr!important}}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <div class="eyebrow">IELTS Neon Lab</div>
+  <h1>Train in the <span class="c">lab</span>.<br>Light up your <em>band</em>.</h1>
+  <p>Work out your band score from raw marks, write timed Task 1 and Task 2 essays with a live word count, practise Speaking Part 2 cue cards, and review academic vocabulary.</p>
+</header>
+
+<nav><div class="inner" role="tablist">
+  <button role="tab" aria-selected="false" data-tab="calc">Band calculator</button>
+  <button role="tab" aria-selected="false" data-tab="writing">Writing practice</button>
+  <button role="tab" aria-selected="false" data-tab="speaking">Speaking cue cards</button>
+  <button role="tab" aria-selected="false" data-tab="vocab">Vocabulary</button>
+  <button role="tab" aria-selected="true" data-tab="history">My scores</button>
+</div></nav>
+
+<main>
+  <!-- CALCULATOR -->
+  <section id="calc" hidden="">
+    <h2>Band score calculator</h2>
+    <p class="sub">Enter your raw scores (out of 40) for Listening and Reading, and your estimated bands for Writing and Speaking.</p>
+    <div class="row" style="margin-bottom:18px">
+      <label style="margin:0">Test type</label>
+      <select id="testType" style="width:auto">
+        <option value="academic">Academic</option>
+        <option value="general">General Training</option>
+      </select>
+    </div>
+    <div class="grid">
+      <div class="card">
+        <label for="listen">Listening (raw /40)</label>
+        <input id="listen" type="number" min="0" max="40" placeholder="e.g. 32">
+        <div class="band" id="listenBand">7.0<small>BAND</small></div>
+      </div>
+      <div class="card">
+        <label for="read">Reading (raw /40)</label>
+        <input id="read" type="number" min="0" max="40" placeholder="e.g. 30">
+        <div class="band" id="readBand">6.0<small>BAND</small></div>
+      </div>
+      <div class="card">
+        <label for="write">Writing (band)</label>
+        <select id="write"><option value="">Select…</option><option value="9">9.0</option><option value="8.5">8.5</option><option value="8">8.0</option><option value="7.5">7.5</option><option value="7">7.0</option><option value="6.5">6.5</option><option value="6">6.0</option><option value="5.5">5.5</option><option value="5">5.0</option><option value="4.5">4.5</option><option value="4">4.0</option><option value="3.5">3.5</option><option value="3">3.0</option><option value="2.5">2.5</option><option value="2">2.0</option><option value="1.5">1.5</option><option value="1">1.0</option><option value="0.5">0.5</option><option value="0">0.0</option></select>
+        <div class="band" id="writeBand">7.0<small>BAND</small></div>
+      </div>
+      <div class="card">
+        <label for="speak">Speaking (band)</label>
+        <select id="speak"><option value="">Select…</option><option value="9">9.0</option><option value="8.5">8.5</option><option value="8">8.0</option><option value="7.5">7.5</option><option value="7">7.0</option><option value="6.5">6.5</option><option value="6">6.0</option><option value="5.5">5.5</option><option value="5">5.0</option><option value="4.5">4.5</option><option value="4">4.0</option><option value="3.5">3.5</option><option value="3">3.0</option><option value="2.5">2.5</option><option value="2">2.0</option><option value="1.5">1.5</option><option value="1">1.0</option><option value="0.5">0.5</option><option value="0">0.0</option></select>
+        <div class="band" id="speakBand">7.0<small>BAND</small></div>
+      </div>
+    </div>
+    <div class="overall">
+      <div><div class="eyebrow">Overall</div><div class="big" id="overall">7.0</div></div>
+      <p id="overallNote">Average 6.75 → 7.0. Good user.</p>
+      <button class="btn accent" id="saveScore" style="margin-left:auto">Save to my scores</button>
+    </div>
+  </section>
+
+  <!-- WRITING -->
+  <section id="writing" hidden="">
+    <h2>Timed writing practice</h2>
+    <p class="sub">Pick a task, start the timer, and write. Your draft is saved in this browser automatically.</p>
+    <div class="grid" style="grid-template-columns:2fr 1fr">
+      <div class="card">
+        <div class="row">
+          <select id="wTask" style="width:auto">
+            <option value="t1">Task 1 · 20 min · 150+ words</option>
+            <option value="t2">Task 2 · 40 min · 250+ words</option>
+          </select>
+          <button class="btn alt" id="newPrompt">New prompt</button>
+        </div>
+        <div class="prompt" id="wPrompt">The pie charts show the main sources of energy used in a country in 1985 and 2015. Summarise the information by selecting and reporting the main features, and make comparisons where relevant.</div>
+        <textarea id="essay" placeholder="Start writing here…"></textarea>
+        <div class="stats" style="margin-top:10px">
+          <span>Words: <b id="wc">0</b></span>
+          <span>Paragraphs: <b id="pc">0</b></span>
+          <span>Sentences: <b id="sc">0</b></span>
+          <span id="wcStatus"><span class="pill no">150 words to go</span></span>
+        </div>
+      </div>
+      <div class="card">
+        <label>Timer</label>
+        <div class="timer" id="wTimer">20:00</div>
+        <div class="progress"><span id="wProg" style="width: 0%;"></span></div>
+        <div class="row" style="margin-top:14px">
+          <button class="btn" id="wStart">Start</button>
+          <button class="btn alt" id="wReset">Reset</button>
+        </div>
+        <hr style="border:0;border-top:1px solid var(--line);margin:20px 0">
+        <label>Self-check</label>
+        <div class="hint" id="checklist"><label style="font-weight:400;display:flex;gap:8px;margin:6px 0"><input type="checkbox"> Clear overview of main trends</label><label style="font-weight:400;display:flex;gap:8px;margin:6px 0"><input type="checkbox"> Key figures accurately reported</label><label style="font-weight:400;display:flex;gap:8px;margin:6px 0"><input type="checkbox"> Comparisons made</label><label style="font-weight:400;display:flex;gap:8px;margin:6px 0"><input type="checkbox"> No personal opinion</label><label style="font-weight:400;display:flex;gap:8px;margin:6px 0"><input type="checkbox"> Varied vocabulary for trends</label></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SPEAKING -->
+  <section id="speaking" hidden="">
+    <h2>Speaking Part 2 cue cards</h2>
+    <p class="sub">You get 1 minute to prepare and up to 2 minutes to speak. Make notes, then talk until the timer ends.</p>
+    <div class="grid" style="grid-template-columns:2fr 1fr">
+      <div class="card">
+        <div class="cue" id="cue">Describe a place you visited that left a strong impression on you.<ul><li>You should say:</li><li>where it was</li><li>when you went there</li><li>what you did there</li><li>and explain why it made a strong impression</li></ul></div>
+        <button class="btn alt" id="newCue" style="margin-top:12px">Another card</button>
+        <div class="prompt" style="margin-top:18px">
+          <b>Part 3 follow-ups</b>
+          <ul id="followups" style="margin:6px 0 0;padding-left:20px"><li>Why do people like to travel to new places?</li><li>How has tourism changed your country?</li><li>Should historic sites charge visitors to enter?</li></ul>
+        </div>
+      </div>
+      <div class="card">
+        <label id="sPhase">Ready</label>
+        <div class="timer" id="sTimer">1:00</div>
+        <div class="progress"><span id="sProg" style="width: 0%;"></span></div>
+        <div class="row" style="margin-top:14px">
+          <button class="btn" id="sStart">Start prep</button>
+          <button class="btn alt" id="sReset">Reset</button>
+        </div>
+        <p class="hint" style="margin-top:14px">The timer switches from preparation to speaking on its own and beeps at each change.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- VOCAB -->
+  <section id="vocab" hidden="">
+    <h2>Academic vocabulary</h2>
+    <p class="sub">Click the card to reveal its meaning. Mark the words you know, and the rest stay in your review pile.</p>
+    <div class="card flash" id="flash" tabindex="0">
+      <div class="word" id="fWord">sustainable</div>
+      <div class="def" id="fDef">able to continue without causing damage</div>
+      <div class="ex" id="fEx">“Cities need more sustainable forms of transport.”</div>
+      <div class="hint" id="fHint" style="margin-top:14px" hidden="">Click or press Space to reveal</div>
+    </div>
+    <div class="row" style="margin-top:14px;justify-content:space-between">
+      <div class="row">
+        <button class="btn alt" id="fAgain">Still learning</button>
+        <button class="btn" id="fKnow">I know this</button>
+      </div>
+      <div class="row">
+        <span class="hint" id="fCount">3 / 20 known</span>
+        <button class="btn alt" id="fResetAll">Reset deck</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- HISTORY -->
+  <section id="history">
+    <h2>My scores</h2>
+    <p class="sub">Scores you save from the calculator are kept in this browser.</p>
+    <div class="card">
+      <table>
+        <thead><tr><th>Date</th><th>Type</th><th>L</th><th>R</th><th>W</th><th>S</th><th>Overall</th><th></th></tr></thead>
+        <tbody id="histBody"></tbody>
+      </table>
+      <p class="hint" id="histEmpty">No saved scores yet.</p>
+    </div>
+  </section>
+</main>
+<footer>Band conversions are approximate and based on commonly published tables. Official scores may vary slightly from test to test.</footer>
+
+<script>
+const $ = id => document.getElementById(id);
+const store = {
+  get:(k,d)=>{try{return JSON.parse(localStorage.getItem('ielts:'+k))??d}catch{return d}},
+  set:(k,v)=>localStorage.setItem('ielts:'+k,JSON.stringify(v))
+};
+
+/* Tabs */
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('nav button').forEach(x=>x.setAttribute('aria-selected',x===b));
+  document.querySelectorAll('main section').forEach(s=>s.hidden=s.id!==b.dataset.tab);
+  if(b.dataset.tab==='history') renderHistory();
+});
+
+/* Calculator */
+const TABLES = {
+  listening:[[39,9],[37,8.5],[35,8],[32,7.5],[30,7],[26,6.5],[23,6],[18,5.5],[16,5],[13,4.5],[10,4],[8,3.5],[6,3],[4,2.5],[2,2],[1,1],[0,0]],
+  academic:[[39,9],[37,8.5],[35,8],[33,7.5],[30,7],[27,6.5],[23,6],[19,5.5],[15,5],[13,4.5],[10,4],[8,3.5],[6,3],[4,2.5],[2,2],[1,1],[0,0]],
+  general:[[40,9],[39,8.5],[37,8],[36,7.5],[34,7],[32,6.5],[30,6],[27,5.5],[23,5],[19,4.5],[15,4],[12,3.5],[9,3],[6,2.5],[4,2],[1,1],[0,0]]
+};
+const conv = (raw,t)=>{ for(const [min,b] of TABLES[t]) if(raw>=min) return b; return 0; };
+const fmt = b => b==null?'–':(Number.isInteger(b)?b.toFixed(1):String(b));
+['write','speak'].forEach(id=>{
+  const s=$(id); s.innerHTML='<option value="">Select…</option>';
+  for(let b=9;b>=0;b-=.5) s.innerHTML+=`<option value="${b}">${fmt(b)}</option>`;
+});
+function roundOverall(avg){ const f=avg-Math.floor(avg); return f<.25?Math.floor(avg):f<.75?Math.floor(avg)+.5:Math.ceil(avg); }
+const DESC = {9:'Expert user',8.5:'Very good user',8:'Very good user',7.5:'Good user',7:'Good user',6.5:'Competent user',6:'Competent user',5.5:'Modest user',5:'Modest user',4.5:'Limited user',4:'Limited user',3.5:'Extremely limited user',3:'Extremely limited user'};
+let current=null;
+function calc(){
+  const t=$('testType').value;
+  const rawL=$('listen').value, rawR=$('read').value;
+  const L = rawL===''?null:conv(Math.min(40,Math.max(0,+rawL)),'listening');
+  const R = rawR===''?null:conv(Math.min(40,Math.max(0,+rawR)),t);
+  const W = $('write').value===''?null:+$('write').value;
+  const S = $('speak').value===''?null:+$('speak').value;
+  $('listenBand').firstChild.nodeValue=fmt(L); $('readBand').firstChild.nodeValue=fmt(R);
+  $('writeBand').firstChild.nodeValue=fmt(W); $('speakBand').firstChild.nodeValue=fmt(S);
+  const all=[L,R,W,S];
+  if(all.every(v=>v!=null)){
+    const avg=all.reduce((a,b)=>a+b,0)/4, o=roundOverall(avg);
+    $('overall').textContent=fmt(o);
+    $('overallNote').textContent=`Average ${avg.toFixed(3).replace(/0+$/,'').replace(/\.$/,'')} → ${fmt(o)}. ${DESC[o]||'Non-user / intermittent user'}.`;
+    current={date:new Date().toISOString(),type:t,L,R,W,S,O:o};
+  } else { $('overall').textContent='–'; current=null; }
+  store.set('calc',{t,rawL,rawR,w:$('write').value,s:$('speak').value});
+}
+const saved=store.get('calc',null);
+if(saved){$('testType').value=saved.t;$('listen').value=saved.rawL;$('read').value=saved.rawR;$('write').value=saved.w;$('speak').value=saved.s;}
+['testType','listen','read','write','speak'].forEach(id=>$(id).addEventListener('input',calc));
+calc();
+$('saveScore').onclick=()=>{
+  if(!current){alert('Fill in all four skills first.');return;}
+  const h=store.get('history',[]); h.unshift(current); store.set('history',h);
+  $('saveScore').textContent='Saved ✓'; setTimeout(()=>$('saveScore').textContent='Save to my scores',1500);
+};
+function renderHistory(){
+  const h=store.get('history',[]);
+  $('histEmpty').hidden=h.length>0;
+  $('histBody').innerHTML=h.map((r,i)=>`<tr><td>${new Date(r.date).toLocaleDateString()}</td><td>${r.type==='academic'?'Academic':'General'}</td><td>${fmt(r.L)}</td><td>${fmt(r.R)}</td><td>${fmt(r.W)}</td><td>${fmt(r.S)}</td><td><b>${fmt(r.O)}</b></td><td><button class="btn alt" data-del="${i}" style="padding:4px 10px">✕</button></td></tr>`).join('');
+  $('histBody').querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>{h.splice(+b.dataset.del,1);store.set('history',h);renderHistory();});
+}
+
+/* Writing */
+const PROMPTS = {
+  t1:[
+    'The line graph shows the percentage of households with internet access in three countries between 2000 and 2020. Summarise the information by selecting and reporting the main features, and make comparisons where relevant.',
+    'The bar chart compares the amount of money spent on five categories of consumer goods in the UK and France in 2015. Summarise the information by selecting and reporting the main features, and make comparisons where relevant.',
+    'The diagram illustrates the process by which recycled glass bottles are produced. Summarise the information by selecting and reporting the main features.',
+    'The two maps show changes to a small coastal town between 1990 and today. Summarise the information by selecting and reporting the main features, and make comparisons where relevant.',
+    'The pie charts show the main sources of energy used in a country in 1985 and 2015. Summarise the information by selecting and reporting the main features, and make comparisons where relevant.'
+  ],
+  t2:[
+    'Some people believe that university education should be free for all students. Others think students should pay for their own studies. Discuss both views and give your own opinion.',
+    'In many cities, the use of private cars is increasing. What problems does this cause, and what measures could be taken to solve them?',
+    'Some people think that children should start learning a foreign language at primary school rather than secondary school. Do the advantages of this outweigh the disadvantages?',
+    'Technology is making communication easier, yet people are becoming more isolated. To what extent do you agree or disagree?',
+    'Governments should spend more money on public services than on the arts. To what extent do you agree or disagree?',
+    'More and more people are choosing to work from home. Is this a positive or negative development?'
+  ]
+};
+const CHECK = {
+  t1:['Clear overview of main trends','Key figures accurately reported','Comparisons made','No personal opinion','Varied vocabulary for trends'],
+  t2:['Every part of the question answered','Clear position throughout','Each paragraph has a central idea','Ideas developed with examples','Cohesive devices used naturally','Clear conclusion']
+};
+let wDur=1200, wLeft=1200, wInt=null, pIdx={t1:0,t2:0};
+function setTask(){
+  const t=$('wTask').value; wDur=t==='t1'?1200:2400; resetW();
+  $('wPrompt').textContent=PROMPTS[t][pIdx[t]%PROMPTS[t].length];
+  $('checklist').innerHTML=CHECK[t].map(c=>`<label style="font-weight:400;display:flex;gap:8px;margin:6px 0"><input type="checkbox"> ${c}</label>`).join('');
+  $('essay').value=store.get('essay:'+t,''); count();
+}
+function count(){
+  const v=$('essay').value, w=(v.match(/\b[\w'’-]+\b/g)||[]).length;
+  $('wc').textContent=w;
+  $('pc').textContent=v.split(/\n\s*\n/).filter(p=>p.trim()).length;
+  $('sc').textContent=(v.match(/[^.!?]+[.!?]+/g)||[]).length;
+  const min=$('wTask').value==='t1'?150:250;
+  $('wcStatus').innerHTML=w>=min?`<span class="pill ok">Minimum reached</span>`:`<span class="pill no">${min-w} words to go</span>`;
+  store.set('essay:'+$('wTask').value,v);
+}
+const mmss=s=>`${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
+function drawW(){ $('wTimer').textContent=mmss(wLeft); $('wTimer').classList.toggle('low',wLeft<=300); $('wProg').style.width=(100*(1-wLeft/wDur))+'%'; }
+function resetW(){ clearInterval(wInt); wInt=null; wLeft=wDur; $('wStart').textContent='Start'; drawW(); }
+$('wStart').onclick=()=>{
+  if(wInt){clearInterval(wInt);wInt=null;$('wStart').textContent='Resume';return;}
+  $('wStart').textContent='Pause';
+  wInt=setInterval(()=>{wLeft--;drawW();if(wLeft<=0){clearInterval(wInt);wInt=null;beep();$('wStart').textContent='Start';alert("Time's up! Put your pen down.");}},1000);
+};
+$('wReset').onclick=resetW;
+$('wTask').onchange=setTask;
+$('newPrompt').onclick=()=>{const t=$('wTask').value;pIdx[t]++;$('wPrompt').textContent=PROMPTS[t][pIdx[t]%PROMPTS[t].length];};
+$('essay').addEventListener('input',count);
+setTask();
+
+/* Speaking */
+const CUES = [
+  {t:'Describe a book you read that you found useful.',p:['what the book was','when you read it','what it was about','and explain why you found it useful'],f:['Do people read less now than in the past?','Are printed books going to disappear?','What kinds of books are popular with young people in your country?']},
+  {t:'Describe a place you visited that left a strong impression on you.',p:['where it was','when you went there','what you did there','and explain why it made a strong impression'],f:['Why do people like to travel to new places?','How has tourism changed your country?','Should historic sites charge visitors to enter?']},
+  {t:'Describe a person who has influenced you.',p:['who this person is','how you know them','what they are like','and explain how they influenced you'],f:['Who are the role models for young people today?','Do celebrities have a responsibility to behave well?','Are parents still the biggest influence on children?']},
+  {t:'Describe a skill you would like to learn.',p:['what the skill is','how you would learn it','how long it would take','and explain why you want to learn it'],f:['Is it better to learn skills from a teacher or online?','What skills will be important in the future?','Should schools teach practical life skills?']},
+  {t:'Describe a time you helped someone.',p:['who you helped','what the situation was','how you helped them','and explain how you felt about it'],f:['Why do some people volunteer?','Should helping others be taught at school?','Are people less helpful in big cities?']},
+  {t:'Describe a piece of technology you find difficult to use.',p:['what it is','when you got it','why it is difficult','and explain how you feel about it'],f:['Do older people find technology harder to learn?','Has technology made life more stressful?','Should children be limited in screen time?']}
+];
+let cIdx=Math.floor(Math.random()*CUES.length);
+function showCue(){
+  const c=CUES[cIdx%CUES.length];
+  $('cue').innerHTML=`${c.t}<ul><li>You should say:</li>${c.p.map(x=>`<li>${x}</li>`).join('')}</ul>`;
+  $('followups').innerHTML=c.f.map(x=>`<li>${x}</li>`).join('');
+}
+$('newCue').onclick=()=>{cIdx++;showCue();resetS();};
+showCue();
+let sPhase='ready', sLeft=60, sDur=60, sInt=null;
+function drawS(){ $('sTimer').textContent=mmss(sLeft); $('sProg').style.width=(100*(1-sLeft/sDur))+'%'; $('sTimer').classList.toggle('low',sPhase==='speak'&&sLeft<=20); }
+function resetS(){ clearInterval(sInt); sInt=null; sPhase='ready'; sLeft=sDur=60; $('sPhase').textContent='Ready'; $('sStart').textContent='Start prep'; $('sStart').disabled=false; drawS(); }
+$('sStart').onclick=()=>{
+  if(sInt) return;
+  sPhase='prep'; $('sPhase').textContent='Preparation · make notes'; $('sStart').disabled=true;
+  sInt=setInterval(()=>{
+    sLeft--; drawS();
+    if(sLeft<=0){
+      beep();
+      if(sPhase==='prep'){ sPhase='speak'; sLeft=sDur=120; $('sPhase').textContent='Speaking · keep going'; drawS(); }
+      else { clearInterval(sInt); sInt=null; sPhase='done'; $('sPhase').textContent='Done: thank you!'; $('sStart').disabled=false; $('sStart').textContent='Start again'; sLeft=sDur=60; }
+    }
+  },1000);
+};
+$('sReset').onclick=resetS;
+drawS();
+
+function beep(){ try{const a=new (window.AudioContext||window.webkitAudioContext)(),o=a.createOscillator(),g=a.createGain();o.frequency.value=880;o.connect(g);g.connect(a.destination);g.gain.setValueAtTime(.2,a.currentTime);g.gain.exponentialRampToValueAtTime(.001,a.currentTime+.6);o.start();o.stop(a.currentTime+.6);}catch{} }
+
+/* Vocabulary */
+const WORDS = [
+  ['mitigate','to make something less harmful or severe','Planting trees can help mitigate the effects of air pollution.'],
+  ['substantial','large in amount, value or importance','There has been a substantial increase in online shopping.'],
+  ['detrimental','causing harm or damage','Excessive screen time can be detrimental to children’s health.'],
+  ['proliferation','a rapid increase in number','The proliferation of smartphones has changed how we communicate.'],
+  ['inevitable','certain to happen; unavoidable','Some job losses are inevitable as automation spreads.'],
+  ['fluctuate','to rise and fall irregularly','Sales fluctuated between 200 and 350 units per month.'],
+  ['advocate','to publicly support or recommend','Many experts advocate a shorter working week.'],
+  ['exacerbate','to make a problem worse','Rising rents have exacerbated the housing crisis.'],
+  ['plateau','to reach a stable level after a period of change','Unemployment plateaued at around 5% after 2018.'],
+  ['ubiquitous','present or found everywhere','Wi-Fi has become ubiquitous in modern cities.'],
+  ['curb','to control or limit something','The government introduced taxes to curb sugar consumption.'],
+  ['indispensable','absolutely necessary','Computers are indispensable in today’s workplaces.'],
+  ['alleviate','to make suffering or a problem less severe','Public transport investment could alleviate traffic congestion.'],
+  ['disparity','a great difference','There is a growing disparity between urban and rural incomes.'],
+  ['compelling','convincing; powerful enough to attract attention','There is compelling evidence that exercise improves memory.'],
+  ['surge','a sudden large increase','Electricity use surged during the summer months.'],
+  ['notwithstanding','in spite of','Notwithstanding the costs, the project was a success.'],
+  ['paramount','more important than anything else','Safety is paramount when designing public spaces.'],
+  ['counterproductive','having the opposite of the desired effect','Strict punishments can be counterproductive for teenagers.'],
+  ['sustainable','able to continue without causing damage','Cities need more sustainable forms of transport.']
+];
+let known=new Set(store.get('known',[])), deck=[], fi=0;
+function buildDeck(){ deck=WORDS.map((w,i)=>i).filter(i=>!known.has(i)).sort(()=>Math.random()-.5); fi=0; showCard(); }
+function showCard(){
+  $('fCount').textContent=`${known.size} / ${WORDS.length} known`;
+  ['fDef','fEx'].forEach(id=>$(id).hidden=true); $('fHint').hidden=false;
+  if(!deck.length){ $('fWord').textContent='🎉 Deck complete'; $('fHint').textContent='Reset the deck to practise again'; return; }
+  $('fHint').textContent='Click or press Space to reveal';
+  const w=WORDS[deck[fi%deck.length]]; $('fWord').textContent=w[0]; $('fDef').textContent=w[1]; $('fEx').textContent='“'+w[2]+'”';
+}
+function reveal(){ if(!deck.length) return; $('fDef').hidden=$('fEx').hidden=false; $('fHint').hidden=true; }
+$('flash').onclick=reveal;
+$('flash').onkeydown=e=>{if(e.code==='Space'){e.preventDefault();reveal();}};
+$('fAgain').onclick=()=>{ if(deck.length){fi++;showCard();} };
+$('fKnow').onclick=()=>{ if(!deck.length) return; known.add(deck[fi%deck.length]); store.set('known',[...known]); deck.splice(fi%deck.length,1); showCard(); };
+$('fResetAll').onclick=()=>{ known.clear(); store.set('known',[]); buildDeck(); };
+buildDeck();
+</script>
+
+
+<script async="" src="/.netlify/scripts/ar" data-netlify-deploy-id="6af1d09893336277d532d453" data-netlify-site-id="b2efe3f9-0bb8-4faa-b3cd-2395f2a86df1" data-agent-runner-id="6af1d00e2a5847bdd2ec66b1"></script>
+<script async="" src="/.netlify/scripts/hud?variant=public" data-nf-variant="public" data-netlify-site-id="b2efe3f9-0bb8-4faa-b3cd-2395f2a86df1" data-app-host="app.netlify.com" data-account-tier="free"></script>
+<iframe id="nl-badge-frame" title="Powered by Netlify" srcdoc="&lt;!doctype html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;meta name=&quot;color-scheme&quot; content=&quot;dark&quot;&gt;&lt;style&gt;
+    :root{--nl-vw:1704px;--nl-vh:871px}
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:transparent;overflow:hidden}
+    body{display:flex;align-items:flex-end;justify-content:flex-end;height:100vh;
+      padding:8px 18px 18px 8px;
+      font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:14px;line-height:1.5;color:#f4f9f9;-webkit-font-smoothing:antialiased}
+    .nl-wrap{display:flex;flex-direction:column;align-items:flex-end;gap:10px;width:max-content;max-width:calc(var(--nl-vw,100vw) - 26px)}
+    button{font-family:inherit;cursor:pointer}
+    :focus-visible{outline:2px solid #32e6e2;outline-offset:2px;border-radius:6px}
+    .nl-icon-btn{position:relative;flex:none;width:30px;height:30px;display:inline-flex;align-items:center;justify-content:center;border-radius:8px;border:1px solid transparent;background:transparent;color:#d5e3e6;transition:background .15s ease,color .15s ease}
+    .nl-icon-btn:hover{background:rgba(255,255,255,0.08);color:#f4f9f9}
+    .nl-tap::after{content:&quot;&quot;;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+      width:max(100%,44px);height:max(100%,44px)}
+    @keyframes nl-rise{from{opacity:0;transform:translateY(10px) scale(.97)}to{opacity:1;transform:none}}
+    @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition:none!important}}
+  
+      .nl-card{position:relative;display:none;width:min(340px,calc(var(--nl-vw,100vw) - 26px));max-height:calc(var(--nl-vh,100vh) - 84px);overflow-y:auto;background:linear-gradient(180deg,#132832 0%,#0e1e25 100%);border:1px solid rgba(255,255,255,0.09);border-radius:18px;padding:18px;transform-origin:bottom right;animation:nl-rise .3s cubic-bezier(.34,1.4,.4,1) both}
+      .nl-card.open{display:block}
+      .nl-card-close{position:absolute;top:10px;right:10px}
+      .nl-card h2{margin:0;padding-right:30px;font-size:16px;font-weight:750;letter-spacing:-0.015em;line-height:1.35}
+      .nl-card h2 em{font-style:normal;background:linear-gradient(90deg,#32e6e2,#4d7cfe,#9a6bff);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+      .nl-card p{margin:8px 0 0;font-size:12.5px;color:#d5e3e6}
+      .nl-prompt{position:relative;margin-top:14px;background:#10222b;border:1px solid rgba(255,255,255,0.09);border-radius:14px;padding:10px 12px;transition:border-color .15s ease,box-shadow .15s ease}
+      .nl-prompt:focus-within{border-color:#05bdba;box-shadow:0 0 0 3px rgba(5,189,186,0.18)}
+      .nl-prompt textarea{display:block;width:100%;height:38px;resize:none;border:0;outline:none;background:transparent;color:#f4f9f9;font:inherit;font-size:13px;line-height:19px;padding:0 28px 0 0}
+      .nl-prompt textarea::placeholder{color:#a9bdc2}
+      .nl-send{position:absolute;right:9px;bottom:9px;width:24px;height:24px;flex:none;display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:50%;background:#05bdba;color:#02191b;transition:background .15s ease}
+      .nl-send:hover{background:#32e6e2}
+      @media (pointer: coarse){
+        .nl-prompt textarea{font-size:16px;line-height:21px;height:42px}
+      }
+      .nl-or{display:flex;align-items:center;gap:10px;margin:12px 0;font-size:10.5px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#a9bdc2}
+      .nl-or::before,.nl-or::after{content:&quot;&quot;;flex:1;height:1px;background:rgba(255,255,255,0.09)}
+      .nl-drop{display:flex;align-items:center;justify-content:space-between;gap:6px;text-decoration:none;background:#1b3a45;border:1px solid rgba(255,255,255,0.09);border-radius:10px;padding:10px 12px;font-size:13px;font-weight:600;color:#cfe0e3;transition:background .15s ease,color .15s ease,border-color .15s ease}
+      .nl-drop:hover{background:#224753;color:#f4f9f9;border-color:rgba(50,230,226,0.3)}
+      .nl-drop .nl-arrow{transition:transform .18s cubic-bezier(.34,1.4,.4,1)}
+      .nl-drop:hover .nl-arrow{transform:translateX(3px)}
+      .nl-badge{display:flex;align-items:center;gap:9px;white-space:nowrap;border:1px solid rgba(255,255,255,0.09);background:linear-gradient(180deg,#142b34,#0e1e25);color:#f4f9f9;border-radius:999px;padding:9px 14px 9px 11px;font-size:13px;font-weight:600;letter-spacing:0.01em;transition:border-color .2s ease}
+      .nl-badge:hover{border-color:rgba(50,230,226,0.26)}
+      .nl-hide{display:block;width:100%;margin-top:10px;border:0;background:transparent;color:#a9bdc2;font-size:11.5px;font-weight:600;padding:4px;border-radius:8px;transition:color .15s ease}
+      .nl-hide:hover{color:#d5e3e6;text-decoration:underline}
+      .nl-badge-label{color:#d5e3e6;font-weight:500}
+      .nl-badge-brand{font-weight:750}
+    &lt;/style&gt;&lt;/head&gt;&lt;body&gt;
+      &lt;div class=&quot;nl-wrap&quot;&gt;
+        &lt;section class=&quot;nl-card&quot; id=&quot;nl-card&quot; aria-label=&quot;Build your own site on Netlify&quot;&gt;
+          &lt;button type=&quot;button&quot; class=&quot;nl-icon-btn nl-tap nl-card-close&quot; id=&quot;nl-card-close&quot; aria-label=&quot;Close&quot;&gt;&lt;svg width=&quot;14&quot; height=&quot;14&quot; viewBox=&quot;0 0 16 16&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;1.9&quot; stroke-linecap=&quot;round&quot; aria-hidden=&quot;true&quot;&gt;&lt;path d=&quot;M4.5 4.5 11.5 11.5M11.5 4.5 4.5 11.5&quot;/&gt;&lt;/svg&gt;&lt;/button&gt;
+          &lt;h2&gt;&lt;em&gt;Build your own site with Netlify&lt;/em&gt;&lt;/h2&gt;
+          &lt;p&gt;Describe what you want, and an AI agent designs, builds and deploys it in minutes.&lt;/p&gt;
+          &lt;form class=&quot;nl-prompt&quot; action=&quot;https://app.netlify.com/start&quot; method=&quot;get&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;
+            &lt;textarea name=&quot;prompt&quot; rows=&quot;2&quot; required maxlength=&quot;300&quot; autocomplete=&quot;off&quot;
+                      enterkeyhint=&quot;go&quot;
+                      placeholder=&quot;A shop for my handmade surfboards&amp;hellip;&quot;
+                      aria-label=&quot;Describe the site you want to build&quot;&gt;&lt;/textarea&gt;
+            &lt;button type=&quot;submit&quot; class=&quot;nl-send nl-tap&quot; aria-label=&quot;Build this site&quot;&gt;&lt;svg width=&quot;13&quot; height=&quot;13&quot; viewBox=&quot;0 0 16 16&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;1.8&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; aria-hidden=&quot;true&quot;&gt;&lt;path d=&quot;M8 12.75v-9.5M3.9 7.35 8 3.25l4.1 4.1&quot;/&gt;&lt;/svg&gt;&lt;/button&gt;
+            &lt;input type=&quot;hidden&quot; name=&quot;utm_source&quot; value=&quot;netlify_badge&quot;&gt;
+            &lt;input type=&quot;hidden&quot; name=&quot;utm_campaign&quot; value=&quot;loops&quot;&gt;
+            &lt;input type=&quot;hidden&quot; name=&quot;utm_medium&quot; value=&quot;owned&quot;&gt;
+            &lt;input type=&quot;hidden&quot; name=&quot;utm_content&quot; value=&quot;prompt&quot;&gt;
+            &lt;input type=&quot;hidden&quot; name=&quot;utm_id&quot; value=&quot;b2efe3f9-0bb8-4faa-b3cd-2395f2a86df1&quot;&gt;
+            
+          &lt;/form&gt;
+          &lt;div class=&quot;nl-or&quot;&gt;&lt;span&gt;or&lt;/span&gt;&lt;/div&gt;
+          &lt;a class=&quot;nl-drop&quot; href=&quot;https://app.netlify.com/drop?utm_source=netlify_badge&amp;utm_campaign=loops&amp;utm_medium=owned&amp;utm_content=drop&amp;utm_id=b2efe3f9-0bb8-4faa-b3cd-2395f2a86df1&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;
+            &lt;span&gt;Drop a site you already have&lt;/span&gt;&lt;span class=&quot;nl-arrow&quot; aria-hidden=&quot;true&quot;&gt;&amp;rarr;&lt;/span&gt;
+          &lt;/a&gt;
+          
+        &lt;/section&gt;
+        &lt;button type=&quot;button&quot; class=&quot;nl-badge&quot; id=&quot;nl-badge&quot; aria-expanded=&quot;false&quot; aria-controls=&quot;nl-card&quot;
+                aria-label=&quot;Powered by Netlify — build your own site&quot;&gt;
+          &lt;svg width=&quot;18&quot; height=&quot;18&quot; viewBox=&quot;0 0 32 32&quot; fill=&quot;none&quot; aria-hidden=&quot;true&quot;&gt;
+    &lt;path fill=&quot;#fff&quot; d=&quot;M17.9922 18.3225H14.005L13.6746 17.9921V14.005L14.005 13.6746H17.9922L18.3226 14.005V17.9921L17.9922 18.3225Z&quot;/&gt;
+    &lt;g fill=&quot;#05BDBA&quot;&gt;
+      &lt;path d=&quot;M9.6958 24.3311H9.35705L7.6661 22.6401V22.3041L10.2511 19.7164L12.042 19.7191L12.2808 19.9552V21.7461L9.6958 24.3311Z&quot;/&gt;
+      &lt;path d=&quot;M7.6661 9.69576V9.35701L9.35705 7.66606H9.6958L12.2808 10.2511V12.0392L12.042 12.2808H10.2511L7.6661 9.69576Z&quot;/&gt;
+      &lt;path d=&quot;M10.0457 17.4369H0.205466L0 17.2314V14.7658L0.205466 14.5603H10.0457L10.2511 14.7658V17.2314L10.0457 17.4369Z&quot;/&gt;
+      &lt;path d=&quot;M31.7945 17.4369H21.9544L21.7489 17.2314V14.7658L21.9544 14.5603H31.7945L32 14.7658V17.2314L31.7945 17.4369Z&quot;/&gt;
+      &lt;path d=&quot;M14.5631 10.0456V2.66547L14.7686 2.46001H17.2343L17.4396 2.66547V10.0456L17.2343 10.2511H14.7686L14.5631 10.0456Z&quot;/&gt;
+      &lt;path d=&quot;M14.5631 29.3316V21.9515L14.7686 21.746H17.2343L17.4396 21.9515V29.3316L17.2343 29.5371H14.7686L14.5631 29.3316Z&quot;/&gt;
+    &lt;/g&gt;&lt;/svg&gt;
+          &lt;span&gt;&lt;span class=&quot;nl-badge-label&quot;&gt;Powered by&lt;/span&gt; &lt;span class=&quot;nl-badge-brand&quot;&gt;Netlify&lt;/span&gt;&lt;/span&gt;
+        &lt;/button&gt;
+      &lt;/div&gt;
+      &lt;script&gt;
+        
+    function nlSend(){
+      var wrap=document.querySelector('.nl-wrap'),boxes=[];
+      for(var i=0;i&lt;wrap.children.length;i++){
+        var c=wrap.children[i];
+        if(!c.offsetWidth||!c.offsetHeight)continue;
+        boxes.push({x:c.offsetLeft-wrap.offsetLeft+8,
+                    y:c.offsetTop-wrap.offsetTop+8,
+                    w:c.offsetWidth,h:c.offsetHeight});
+      }
+      parent.postMessage({nlHud:'resize',
+        width:wrap.offsetWidth+26,
+        height:wrap.offsetHeight+26,
+        boxes:boxes},'*');
+    }
+    function nlSendSoon(){requestAnimationFrame(nlSend);}
+    window.addEventListener('load',nlSend);
+    window.addEventListener('message',function(e){
+      if(e.source!==parent||!e.data||e.data.nlHud!=='viewport')return;
+      var s=document.documentElement.style;
+      s.setProperty('--nl-vw',e.data.w+'px');
+      s.setProperty('--nl-vh',e.data.h+'px');
+      document.documentElement.classList.toggle('nl-narrow',e.data.w&lt;600);
+      nlSendSoon();
+    });
+    var nlCoarse=window.matchMedia('(pointer: coarse)').matches;
+    function nlSubmit(form){
+      if(form.requestSubmit)return form.requestSubmit();
+      if(form.checkValidity&amp;&amp;!form.checkValidity())
+        return form.reportValidity&amp;&amp;form.reportValidity();
+      form.submit();
+    }
+  
+        var badge=document.getElementById('nl-badge'),card=document.getElementById('nl-card'),
+            box=card.querySelector('textarea');
+        function setOpen(open){
+          card.classList.toggle('open',open);
+          badge.setAttribute('aria-expanded',open?'true':'false');
+          nlSendSoon();
+          if(open&amp;&amp;!nlCoarse)box.focus();
+        }
+        box.addEventListener('keydown',function(e){
+          if(e.key==='Enter'&amp;&amp;!e.shiftKey){e.preventDefault();nlSubmit(box.form);}
+        });
+        badge.addEventListener('click',function(){setOpen(!card.classList.contains('open'));});
+        document.getElementById('nl-card-close').addEventListener('click',function(){setOpen(false);badge.focus();});
+        document.addEventListener('keydown',function(e){
+          if(e.key==='Escape'&amp;&amp;card.classList.contains('open')){setOpen(false);badge.focus();}
+        });
+        card.addEventListener('click',function(e){
+          if(e.target.closest('#nl-hide'))parent.postMessage({nlHud:'state',value:'hidden'},'*');
+        });
+      &lt;/script&gt;
+    &lt;/body&gt;&lt;/html&gt;" style="position: fixed; bottom: 0px; right: 0px; border: 0px; margin: 0px; padding: 0px; background: transparent; color-scheme: dark; z-index: 2147483645; width: 199px; height: 65px; clip-path: path(&quot;M 3 3 H 186 V 52 H 3 Z&quot;);" data-nl-ready="1"></iframe>
+</body>
+</html>
